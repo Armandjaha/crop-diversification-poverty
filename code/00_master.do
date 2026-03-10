@@ -1,5 +1,5 @@
 /**************************************************************************************************
- Project      : INQSP – Public Service Quality Index
+ Project      : crop-diversification-poverty
  File         : 00_master.do
  Author       : Djaha Armand Kouakou, M.Sc.
 
@@ -18,6 +18,7 @@ clear all
 set more off
 
 * Load project paths
+cd "" // call the folder
 do "code/00_setup.do"
 
 display "--------------------------------------------"
@@ -69,4 +70,5 @@ timer list 1
 
 display "--------------------------------------------"
 display " computation completed successfully"
+
 display "--------------------------------------------"
