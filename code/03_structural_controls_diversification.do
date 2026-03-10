@@ -155,7 +155,7 @@ label var trap_knowhow "Know-how trap: household head illiterate"
 
 keep menage_id grappe menage trap_knowhow
 
-save "$ROOT/knowhow_household_2018.dta", replace
+save "$OUT/knowhow_household_2018.dta", replace
 
 
 ********************************************************************************
@@ -187,7 +187,7 @@ bys menage_id: keep if _n==1
 
 keep vague grappe menage menage_id volat_prix choc_grave nb_chocs_prix
 
-save "$ROOT/price_shocks_household_2018.dta", replace
+save "$OUT/price_shocks_household_2018.dta", replace
 
 
 ********************************************************************************
@@ -230,4 +230,5 @@ save "$OUT/diversification_MPI_dataset_2018.dta", replace
 * END OF SCRIPT
 
 ********************************************************************************
+
 
