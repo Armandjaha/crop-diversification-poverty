@@ -216,6 +216,7 @@ reg mpi_score c.hhi##i.market_participation i.zae ///
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 
 marginsplot
+graph export "figures/mkp_w_concentration.png", replace
 
 
 reg mpi_score c.shannon##i.market_participation i.zae ///
@@ -224,6 +225,7 @@ reg mpi_score c.shannon##i.market_participation i.zae ///
 margins market_participation, at(shannon=(0.2 0.5 0.8))
 
 marginsplot
+graph export "figures/mkp_w_shannon.png", replace
 
 /* Estimating a model incorporating an interaction between high-yield integration (HHI) and market participation reveals a marked heterogeneity in the relationship between productive structure and multidimensional poverty. While agricultural concentration is not significantly associated with the MPI score for non-selling households, the significant negative interaction between HHI and market participation indicates that, for selling households, a higher concentration of production is associated with a lower level of multidimensional poverty. The predictive margins confirm this divergence in trajectories, which intensifies as concentration increases.
 
@@ -240,17 +242,15 @@ reg mpi_score c.hhi##i.market_participation tools_trap i.zae ///
 
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 marginsplot
-
-
-reg mpi_score c.hhi##i.market_participation total_tools_w i.zae ///
-[pw=hhweight], vce(robust)
-
-margins market_participation, at(hhi=(0.2 0.5 0.8))
-marginsplot
+graph export "figures/mkp_add_tools_trap.png", replace
 
 
 reg mpi_score c.hhi##i.market_participation credit_constraint ///
 i.zae [pw=hhweight], vce(robust)
+margins market_participation, at(hhi=(0.2 0.5 0.8))
+
+marginsplot
+graph export "figures/mkp_add_cred_cons.png", replace
 
 
 reg mpi_score c.hhi##i.market_participation knowhow_trap ///
@@ -258,14 +258,14 @@ i.zae [pw=hhweight], vce(robust)
 
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 marginsplot
-
+graph export "figures/mkp_add_knonhow.png", replace
 
 reg mpi_score c.hhi##i.market_participation price_shock ///
 i.zae [pw=hhweight], vce(robust)
 
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 marginsplot
-
+graph export "figures/mkp_add_prshock.png", replace
 
 ********************************************************************************
 * FULL MODEL
@@ -278,6 +278,9 @@ i.zae [pw=hhweight], vce(robust)
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 
 marginsplot
+graph export "figures/mkp_add_struc_constraint.png", replace
+
+
 
 
 
@@ -304,8 +307,17 @@ lincom _b[c.hhi] + _b[2.n_price_shocks#c.hhi]
 margins n_price_shocks, at(hhi=(0.2 0.5 0.8))
 
 marginsplot
+graph export "figures/hhi_price_shocks_margins.png", replace
 
 
+margins, dydx(hhi) at(n_price_shocks=(0 1 2))
+marginsplot
+graph export "figures/decrease_in_income.png", replace
+
+
+test 1.n_price_shocks#c.hhi = 2.n_price_shocks#c.hhi
+
+/*The interaction terms suggest that the marginal effect of crop concentration declines as the number of price shocks increases. A test of equality of the interaction coefficients indicates that the difference between one and two shocks is marginally significant (p = 0.093), suggesting that specialization becomes less beneficial under higher exposure to price shocks.*/
 
 ********************************************************************************
 * 5) ROBUSTNESS: MONETARY POVERTY
@@ -330,7 +342,7 @@ sort wave cluster household
 save "$OUT/pvm.dta", replace
 
 
-use "$OUT/base_men_EHCVM18_var_expl.dta", clear
+use "$OUT/diversification_MPI_dataset_2018.dta", clear
 
 sort wave cluster household
 
@@ -350,6 +362,7 @@ i.zae [pw=hhweight], vce(robust)
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 
 marginsplot
+graph export "figures/monetary_poverty_diversification.png", replace
 
 
 ********************************************************************************
@@ -364,6 +377,7 @@ i.zae [pw=hhweight], vce(robust)
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 
 marginsplot
+graph export "figures/conso.png", replace
 
 
 gen ln_food_cons = ln(hh_food_cons_annual) if hh_food_cons_annual>0
@@ -383,5 +397,4 @@ i.zae [pw=hhweight], vce(robust)
 
 ********************************************************************************
 * END OF SCRIPT
-
 ********************************************************************************
