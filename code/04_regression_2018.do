@@ -49,7 +49,7 @@ set more off
 * LOAD HOUSEHOLD DATASET
 ********************************************************************************
 
-use "$ROOT/diversification_MPI_dataset_2018.dta", clear
+use "$OUT/diversification_MPI_dataset_2018.dta", clear
 
 
 /*
@@ -383,4 +383,5 @@ i.zae [pw=hhweight], vce(robust)
 
 ********************************************************************************
 * END OF SCRIPT
+
 ********************************************************************************
