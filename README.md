@@ -16,7 +16,8 @@ This project uses household survey data from the EHCVM (2018) and 2021 (in progr
 This project documents a set of stylized facts on the relationship between crop diversification, market participation, and multidimensional poverty among agricultural households in Côte d’Ivoire, using EHCVM 2018 and 2021 household survey data.
 
 **1. Limited diversification remains the dominant pattern.**  
-Most agricultural households cultivate only a small number of crops. In 2018, 53% of households produced one or two crops, and this share increased to 57% in 2021, suggesting a slightly more concentrated productive structure in the later wave. 
+Most agricultural households cultivate only a small number of crops. In 2018, 53% of households produced one or two crops, and this share increased to 57% in 2021, suggesting a slightly more concentrated productive structure in the later wave.
+
 **2. Crop portfolios are organized around a stable core of dominant crops.**  
 Across both years, agricultural systems remain centered on a relatively stable set of crops, including cocoa, yam, cashew, paddy rice, maize, and cassava. Diversification therefore appears to reflect an expansion around a common productive core rather than a complete shift in production systems. 
 
