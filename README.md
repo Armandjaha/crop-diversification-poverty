@@ -29,6 +29,7 @@ In 2018, highly diversified households recorded lower average crop income than m
 
 **5. Market participation does not automatically imply better multidimensional well-being.**  
 At a given level of diversification, differences in multidimensional poverty between sellers and non-sellers are often small. This indicates that selling agricultural output is not, by itself, a reliable indicator of better living conditions.
+
 **6. More diversified households tend to exhibit lower multidimensional poverty.**  
 In both 2018 and 2021, households with more diversified crop portfolios generally display lower levels of multidimensional poverty than households cultivating only one or two crops. This pattern is descriptive and should not be interpreted as causal, but it is robust across both survey waves. 
 
