@@ -210,7 +210,7 @@ save "$OUT/assets_household_2018.dta", replace
 * SECTION 6 — MERGE HOUSEHOLD DATABASE
 ********************************************************************************
 
-use "$ROOT/assets_household_2018.dta", clear
+use "$OUT/assets_household_2018.dta", clear
 
 merge 1:1 menage_id using "$OUT/housing_household_2018.dta", nogen
 merge 1:1 grappe menage using "$OUT/fcs_household_2018.dta", nogen
@@ -246,4 +246,5 @@ export excel using "$OUT/MPI_national.xlsx", firstrow(variables) replace
 
 ********************************************************************************
 * END OF SCRIPT
+
 ********************************************************************************
