@@ -78,7 +78,7 @@ bys menage_id: keep if _n==1
 
 keep vague grappe menage menage_id total_tools_w trap_tools tool_level
 
-save "$ROOT/tools_household_2018.dta", replace
+save "$OUT/tools_household_2018.dta", replace
 
 
 ********************************************************************************
@@ -230,5 +230,6 @@ save "$OUT/diversification_MPI_dataset_2018.dta", replace
 * END OF SCRIPT
 
 ********************************************************************************
+
 
 
