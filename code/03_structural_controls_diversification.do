@@ -109,7 +109,7 @@ bys menage_id: keep if _n==1
 
 keep vague grappe menage menage_id credit_constraint n_credit_constraint
 
-save "$ROOT/credit_household_2018.dta", replace
+save "$OUT/credit_household_2018.dta", replace
 
 
 ********************************************************************************
@@ -230,3 +230,4 @@ save "$OUT/diversification_MPI_dataset_2018.dta", replace
 * END OF SCRIPT
 
 ********************************************************************************
+
