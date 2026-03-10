@@ -215,6 +215,10 @@ save "$OUT/diversification_controls_2018.dta", replace
 * SECTION 6 — MERGE WITH MPI DATASET
 ********************************************************************************
 
+
+import excel "$OUT\MPI_national",  firstrow clear
+save "$OUT\MPI_national",  replace
+
 use "$OUT/diversification_controls_2018.dta", clear
 
 merge 1:1 grappe menage ///
@@ -230,6 +234,7 @@ save "$OUT/diversification_MPI_dataset_2018.dta", replace
 * END OF SCRIPT
 
 ********************************************************************************
+
 
 
 
