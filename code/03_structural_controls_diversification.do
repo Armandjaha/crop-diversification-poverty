@@ -194,38 +194,39 @@ save "$ROOT/price_shocks_household_2018.dta", replace
 * SECTION 5 — MERGE STRUCTURAL CONTROLS
 ********************************************************************************
 
-use "$ROOT/hhi_2018.dta", clear
+use "$OUT/hhi_2018.dta", clear
 
 merge 1:1 grappe menage ///
-using "$ROOT/credit_household_2018.dta", keep(master match) nogenerate
+using "$OUT/credit_household_2018.dta", keep(master match) nogenerate
 
 merge 1:1 menage_id ///
-using "$ROOT/knowhow_household_2018.dta", keep(master match) nogenerate
+using "$OUT/knowhow_household_2018.dta", keep(master match) nogenerate
 
 merge 1:1 menage_id ///
-using "$ROOT/price_shocks_household_2018.dta", keep(master match) nogenerate
+using "$OUT/price_shocks_household_2018.dta", keep(master match) nogenerate
 
 merge 1:1 menage_id ///
-using "$ROOT/tools_household_2018.dta", keep(master match) nogenerate
+using "$OUT/tools_household_2018.dta", keep(master match) nogenerate
 
-save "$ROOT/diversification_controls_2018.dta", replace
+save "$OUT/diversification_controls_2018.dta", replace
 
 
 ********************************************************************************
 * SECTION 6 — MERGE WITH MPI DATASET
 ********************************************************************************
 
-use "$ROOT/diversification_controls_2018.dta", clear
+use "$OUT/diversification_controls_2018.dta", clear
 
 merge 1:1 grappe menage ///
-using "$ROOT/MPI_national.dta"
+using "$OUT/MPI_national.dta"
 
 keep if _merge==3
 drop _merge
 
-save "$ROOT/diversification_MPI_dataset_2018.dta", replace
+save "$OUT/diversification_MPI_dataset_2018.dta", replace
 
 
 ********************************************************************************
 * END OF SCRIPT
+
 ********************************************************************************
