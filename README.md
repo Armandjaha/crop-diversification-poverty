@@ -10,7 +10,6 @@ Does crop diversification reduce multidimensional poverty among agricultural hou
 
 This project uses household survey data from the EHCVM (2018) and 2021 (in progress).
 
-## Stylized Facts
 
 ## Stylized Facts
 
