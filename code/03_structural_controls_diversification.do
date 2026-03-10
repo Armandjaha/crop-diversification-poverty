@@ -227,6 +227,126 @@ using "$OUT/MPI_national.dta"
 keep if _merge==3
 drop _merge
 
+
+rename vague          wave
+rename grappe         cluster
+rename menage         household
+rename nb_cult        n_crops
+rename shannon        shannon_index
+rename rev_culture    crop_income
+rename valid_rev      valid_income
+rename prix_imp       implicit_price
+rename rev_tot        total_crop_income
+rename rev_trim       total_crop_income_trim
+rename lrev_trim      ln_crop_income
+rename revenu_pos     market_participation
+rename div_decl       declared_diversification
+rename typ6           diversification_typology
+rename credit_constraint credit_constraint
+rename n_credit_constraint      n_credit_constraint
+rename trap_knowhow   knowhow_trap
+rename volat_prix     price_shock
+rename nb_chocs_prix  n_price_shocks
+rename choc_grave     severe_price_shock
+rename trap_tools     tools_trap
+rename tool_level     tools_level
+
+rename dep_biens      dep_assets
+rename dep_elec       dep_electricity
+rename dep_eau        dep_water
+rename dep_energie    dep_energy
+rename dep_housing    dep_housing
+rename dep_food       dep_food
+rename dep_desco      dep_schooling
+rename dep_educ       dep_education
+
+rename si_mpi         mpi_score
+rename poor_mpi       mpi_poor
+
+
+label var year        "Survey year"
+label var wave        "Survey wave"
+label var cluster     "Sampling cluster"
+label var household   "Household ID"
+label var zae 		  "Household agro-ecological zone (ZAE)"
+label var n_crops     "Number of distinct crops grown"
+label var shannon_index "Shannon diversity index (log number of crops)"
+label var hhi         "Herfindahl-Hirschman Index (crop concentration)"
+
+label var crop_income "Crop income (CFA), sold crops only"
+label var valid_income "Positive income and quantity observed"
+label var implicit_price "Implicit crop price (CFA per unit)"
+label var total_crop_income "Total crop income (sold crops)"
+label var total_crop_income_trim "Total crop income (trimmed 1–99%)"
+label var ln_crop_income "Log total crop income (trimmed)"
+
+label var market_participation "Household participates in crop market (income > 0)"
+label var declared_diversification "Declared diversification level (3 categories)"
+label var diversification_typology "Diversification × market participation typology"
+
+label var credit_constraint "Structurally credit-constrained household (1=yes)"
+label var n_credit_constraint "Number credit-constrained household"
+label var knowhow_trap "Know-how trap (no literate adult); (1=yes)"
+
+label var price_shock "Household experienced a price shock (1=yes)"
+label var n_price_shocks "Number of price shocks experienced (0..2)"
+label var severe_price_shock "Severe price shock with negative impact (1=yes)"
+
+label var total_tools_w "Total agricultural tools (winsorized)"
+label var tools_trap "No agricultural tools owned (1=yes)"
+label var tools_level "Agricultural equipment level; 0=no tool;1=limited ressources"
+
+label var dep_assets "Asset deprivation"
+label var dep_electricity "Electricity deprivation"
+label var dep_water "Water deprivation"
+label var dep_energy "Energy deprivation"
+label var dep_housing "Housing deprivation"
+label var dep_food "Food deprivation"
+label var dep_schooling "School attendance deprivation"
+label var dep_education "Education deprivation"
+
+* Deprivation indicators: 1 = deprived, 0 = not deprived
+label var dep_assets       "Household is deprived in assets (1=yes)"
+label var dep_electricity  "Household is deprived in electricity (1=yes)"
+label var dep_water        "Household is deprived in drinking water (1=yes)"
+label var dep_energy       "Household is deprived in clean cooking fuel (1=yes)"
+label var dep_housing      "Household is deprived in housing quality (1=yes)"
+label var dep_food         "Household is deprived in food security (1=yes) fcs"
+*label var dep_food_1        "Household is deprived in food security (1=yes) sdam"
+label var dep_schooling    "Household is deprived in school attendance (1=yes)"
+label var dep_education    "Household is deprived in educational attainment (1=yes)"
+
+label var mpi_score "Multidimensional Poverty score"
+label var mpi_poor "Multidimensionally poor household (1=yes)"
+
+* 1) Lister toutes les variables string
+ds, has(type string)
+
+* 2) Encoder chaque string -> numérique, en gardant le même nom
+foreach v in `r(varlist)' {
+    encode `v', gen(_`v')   // crée la version numérique
+    drop `v'               // enlève la string
+    rename _`v' `v'        // reprend le même nom
+}
+
+* 3) Vérifier qu'il ne reste plus de string
+ds, has(type string)
+
+
+codebook dep_toilet, tab(100)
+recode dep_toilet (2=1) (1=0)
+label define lblt 1 "deprived" 0 "Ndeprived"
+label values dep_toilet lblt
+ren dep_toilet dep_sanitation
+label var dep_sanitation   "Household is deprived in sanitation (1=yes)"  
+
+codebook mpi_poor , tab(100)
+recode mpi_poor (2=1) (1=0)
+label define lblp 1 "poor" 0 "Not poor"
+label values mpi_poor lblp
+label var  mpi_poor "Household is multidimensionnally poor (1=yes)"
+save, replace
+
 save "$OUT/diversification_MPI_dataset_2018.dta", replace
 
 
@@ -234,6 +354,7 @@ save "$OUT/diversification_MPI_dataset_2018.dta", replace
 * END OF SCRIPT
 
 ********************************************************************************
+
 
 
 
