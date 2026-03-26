@@ -4,7 +4,7 @@ Empirical analysis of the relationship between crop diversification and multidim
 
 ## Research Question
 
-Does crop diversification reduce multidimensional poverty among agricultural households in Côte d’Ivoire?
+Specialize or Diversify? Agricultural Structure and Vulnerability to Price Shocks in Côte d’Ivoire
 
 ## Data
 
