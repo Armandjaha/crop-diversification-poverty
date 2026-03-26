@@ -97,6 +97,7 @@ Interpretation guideline:
 */
 
 
+
 *-------------------------------------------------------------*
 * 2.2 Simplified diversification indices
 *-------------------------------------------------------------*
@@ -106,12 +107,15 @@ label var shannon "Simplified Shannon index (log of crop count)"
 
 gen hhi = 1/nb_cult
 label var hhi "Simple HHI index (1/nb_cult) – crop concentration"
+preserve 
+duplicates drop menage_id nb_cult, force
 graph bar (percent), over(nb_cult) ///
     ytitle("Percent of households") ///
     title("Distribution of crop diversification among  households") ///
     subtitle("EHCVM survey") ///
     note("Author's calculation using EHCVM data")
 graph export "figures/hhi_distribution_2018.png", replace
+restore
 duplicates drop menage_id shannon hhi nb_cult, force
 
 summ nb_cult shannon hhi
