@@ -9,7 +9,7 @@ set linesize 255
 version 17
 
 * 2. Define the project paths
-global ROOT "data"
+global ROOT "data\raw"
 global OUT  "output"
 global CODE "code"
 
