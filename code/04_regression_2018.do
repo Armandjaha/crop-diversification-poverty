@@ -79,6 +79,35 @@ The empirical strategy follows a progressive approach:
    indicators are used.
 */
 
+label var mpi_score "MPI (intensity)"
+label var hhi "HHI"
+label var shannon "Shannon index"
+label var n_crops "Number of crops"
+
+label var market_participation "Seller"
+label var price_shock "Price shock"
+
+label var tools_trap "No agricultural equipment"
+label var credit_constraint "Credit constraint"
+label var knowhow_trap "Low human capital"
+
+label var ln_crop_income "Log agricultural income"
+
+
+label var zae "Agro-ecological zone"
+
+********************************************************************************
+* 0) TABLE 1: DESCRIPTIVE STATISTICS
+********************************************************************************
+
+tabstat mpi_score hhi shannon n_crops [aw=hhweight], ///
+    stat(mean sd min max) save
+
+matrix M = r(StatTotal)'
+
+putexcel set "$OUT/tables/descriptive_stats.xlsx", replace
+putexcel A1 = "Table 1: Descriptive Statistics", bold
+putexcel A3 = matrix(M), names nformat(number_d2)
 
 ********************************************************************************
 * 1) BASELINE ASSOCIATION BETWEEN DIVERSIFICATION AND MPI
@@ -88,13 +117,13 @@ describe mpi_score hhi shannon n_crops zae hhweight
 
 sum mpi_score hhi shannon n_crops [aw=hhweight]
 
-reg mpi_score hhi [pw=hhweight], vce(robust)
+eststo m0: reg mpi_score hhi [pw=hhweight], vce(cluster cluster)
 
-reg mpi_score hhi i.zae [pw=hhweight], vce(robust)
+eststo m1: reg mpi_score hhi i.zae [pw=hhweight], vce(cluster cluster)
 
-reg mpi_score shannon i.zae [pw=hhweight], vce(robust)
+reg mpi_score shannon i.zae [pw=hhweight], vce(cluster cluster)
 
-reg mpi_score n_crops [pw=hhweight], vce(robust)
+reg mpi_score n_crops i.zae [pw=hhweight], vce(cluster cluster)
 
 
 
@@ -117,15 +146,15 @@ knowhow_trap price_shock n_price_shocks severe_price_shock ///
 
 describe tools_trap total_tools_w
 
-reg hhi tools_trap [pw=hhweight], vce(robust)
+reg hhi tools_trap [pw=hhweight], vce(cluster cluster)
 
-reg n_crops total_tools_w [pw=hhweight], vce(robust)
+reg n_crops total_tools_w [pw=hhweight], vce(cluster cluster)
 
-reg hhi tools_trap i.zae [pw=hhweight], vce(robust)
+reg hhi tools_trap i.zae [pw=hhweight], vce(cluster cluster)
 
-reg shannon tools_trap [pw=hhweight], vce(robust)
+reg shannon tools_trap [pw=hhweight], vce(cluster cluster)
 
-reg shannon tools_trap i.zae [pw=hhweight], vce(robust)
+reg shannon tools_trap i.zae [pw=hhweight], vce(cluster cluster)
 
 
 
@@ -135,13 +164,13 @@ reg shannon tools_trap i.zae [pw=hhweight], vce(robust)
 
 describe credit_constraint
 
-reg hhi credit_constraint [pw=hhweight], vce(robust)
+reg hhi credit_constraint [pw=hhweight], vce(cluster cluster)
 
-reg hhi credit_constraint i.zae [pw=hhweight], vce(robust)
+reg hhi credit_constraint i.zae [pw=hhweight], vce(cluster cluster)
 
-reg shannon credit_constraint [pw=hhweight], vce(robust)
+reg shannon credit_constraint [pw=hhweight], vce(cluster cluster)
 
-reg shannon credit_constraint i.zae [pw=hhweight], vce(robust)
+reg shannon credit_constraint i.zae [pw=hhweight], vce(cluster cluster)
 
 
 
@@ -151,13 +180,13 @@ reg shannon credit_constraint i.zae [pw=hhweight], vce(robust)
 
 describe knowhow_trap
 
-reg hhi knowhow_trap [pw=hhweight], vce(robust)
+reg hhi knowhow_trap [pw=hhweight], vce(cluster cluster)
 
-reg hhi knowhow_trap i.zae [pw=hhweight], vce(robust)
+reg hhi knowhow_trap i.zae [pw=hhweight], vce(cluster cluster)
 
-reg shannon knowhow_trap [pw=hhweight], vce(robust)
+reg shannon knowhow_trap [pw=hhweight], vce(cluster cluster)
 
-reg shannon knowhow_trap i.zae [pw=hhweight], vce(robust)
+reg shannon knowhow_trap i.zae [pw=hhweight], vce(cluster cluster)
 
 
 
@@ -182,17 +211,17 @@ describe price_shock n_price_shocks severe_price_shock
 sum price_shock n_price_shocks severe_price_shock [aw=hhweight]
 
 
-reg hhi price_shock [pw=hhweight], vce(robust)
+reg hhi price_shock [pw=hhweight], vce(cluster cluster)
 
-reg hhi price_shock i.zae [pw=hhweight], vce(robust)
+reg hhi price_shock i.zae [pw=hhweight], vce(cluster cluster)
 
-reg n_crops n_price_shocks [pw=hhweight], vce(robust)
+reg n_crops n_price_shocks [pw=hhweight], vce(cluster cluster)
 
-reg n_crops n_price_shocks i.zae [pw=hhweight], vce(robust)
+reg n_crops n_price_shocks i.zae [pw=hhweight], vce(cluster cluster)
 
-reg hhi severe_price_shock [pw=hhweight], vce(robust)
+reg hhi severe_price_shock [pw=hhweight], vce(cluster cluster)
 
-reg hhi severe_price_shock i.zae [pw=hhweight], vce(robust)
+reg hhi severe_price_shock i.zae [pw=hhweight], vce(cluster cluster)
 
 
 table price_shock [pw=hhweight], statistic(mean hhi shannon)
@@ -210,22 +239,22 @@ This finding suggests that observed diversification cannot be interpreted solely
 * 3) HETEROGENEITY: DIVERSIFICATION × MARKET PARTICIPATION
 ********************************************************************************
 
-reg mpi_score c.hhi##i.market_participation i.zae ///
-[pw=hhweight], vce(robust)
-
+eststo m2: reg mpi_score c.hhi##i.market_participation i.zae [pw=hhweight], vce(cluster cluster)
 margins market_participation, at(hhi=(0.2 0.5 0.8))
-
 marginsplot
 graph export "figures/mkp_w_concentration.png", replace
 
 
-reg mpi_score c.shannon##i.market_participation i.zae ///
-[pw=hhweight], vce(robust)
+reg mpi_score c.shannon##i.market_participation i.zae [pw=hhweight], vce(cluster cluster)
 
 margins market_participation, at(shannon=(0.2 0.5 0.8))
-
 marginsplot
 graph export "figures/mkp_w_shannon.png", replace
+
+reg mpi_score c.n_crops##i.market_participation i.zae [pw=hhweight], vce(cluster cluster)
+margins market_participation, at(n_crops=(2 6 8))
+marginsplot
+graph export "figures/mkp_w_n_crops.png", replace
 
 /* Estimating a model incorporating an interaction between high-yield integration (HHI) and market participation reveals a marked heterogeneity in the relationship between productive structure and multidimensional poverty. While agricultural concentration is not significantly associated with the MPI score for non-selling households, the significant negative interaction between HHI and market participation indicates that, for selling households, a higher concentration of production is associated with a lower level of multidimensional poverty. The predictive margins confirm this divergence in trajectories, which intensifies as concentration increases.
 
@@ -237,51 +266,53 @@ At this stage of the analysis, the key finding is not the existence of an averag
 * 3.1 ADDING STRUCTURAL CONSTRAINTS
 ********************************************************************************
 
-reg mpi_score c.hhi##i.market_participation tools_trap i.zae ///
-[pw=hhweight], vce(robust)
-
+eststo a1: reg mpi_score c.hhi##i.market_participation tools_trap i.zae [pw=hhweight], vce(cluster cluster)
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 marginsplot
 graph export "figures/mkp_add_tools_trap.png", replace
 
-
-reg mpi_score c.hhi##i.market_participation credit_constraint ///
-i.zae [pw=hhweight], vce(robust)
+eststo a2: reg mpi_score c.hhi##i.market_participation credit_constraint i.zae [pw=hhweight],vce(cluster cluster)
 margins market_participation, at(hhi=(0.2 0.5 0.8))
-
 marginsplot
 graph export "figures/mkp_add_cred_cons.png", replace
 
 
-reg mpi_score c.hhi##i.market_participation knowhow_trap ///
-i.zae [pw=hhweight], vce(robust)
-
+eststo a3: reg mpi_score c.hhi##i.market_participation knowhow_trap i.zae [pw=hhweight], vce(cluster cluster)
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 marginsplot
 graph export "figures/mkp_add_knonhow.png", replace
 
-reg mpi_score c.hhi##i.market_participation price_shock ///
-i.zae [pw=hhweight], vce(robust)
-
+eststo a4: reg mpi_score c.hhi##i.market_participation price_shock i.zae [pw=hhweight], vce(cluster cluster)
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 marginsplot
 graph export "figures/mkp_add_prshock.png", replace
+
+
+esttab a1 a2 a3 a4 using "$OUT/tables/appendix_constraints.rtf", replace se star(* 0.10 ** 0.05 *** 0.01) label compress b(3) se(3) keep(hhi 1.market_participation 1.market_participation#c.hhi tools_trap credit_constraint knowhow_trap price_shock) stats(N, labels("Observations")) mtitles("Tools" "Credit" "Know-how" "Price shock") title("Appendix: Structural Constraints") addnotes("Robust standard errors in parentheses")
 
 ********************************************************************************
 * FULL MODEL
 ********************************************************************************
 
-reg mpi_score c.hhi##i.market_participation ///
-tools_trap credit_constraint knowhow_trap price_shock ///
-i.zae [pw=hhweight], vce(robust)
-
+eststo m3: reg mpi_score c.hhi##i.market_participation tools_trap credit_constraint knowhow_trap price_shock i.zae [pw=hhweight], vce(cluster cluster)
 margins market_participation, at(hhi=(0.2 0.5 0.8))
-
 marginsplot
 graph export "figures/mkp_add_struc_constraint.png", replace
 
 
-
+* Export main table
+esttab m0 m1 m2 m3 using "$OUT/tables/main_results.rtf", ///
+    replace ///
+    se star(* 0.10 ** 0.05 *** 0.01) ///
+    label ///
+    compress ///
+    nogaps ///
+    b(3) se(3) ///
+    drop(*.zae 0.market_participation 0.market_participation#c.hhi) ///
+    stats(N r2, labels("Obs." "R2")) ///
+    mtitles("Base" "ZAE" "Market" "Full") ///
+    title("Main Results: Crop Structure, Market Participation and Price Shocks") ///
+    addnotes("Robust standard errors in parentheses","ZAE fixed effects included")
 
 
 ********************************************************************************
@@ -290,12 +321,8 @@ graph export "figures/mkp_add_struc_constraint.png", replace
 
 describe ln_crop_income hhi n_price_shocks zae hhweight
 
-reg ln_crop_income i.n_price_shocks i.zae ///
-[pw=hhweight], vce(robust)
-
-
-reg ln_crop_income c.hhi##i.n_price_shocks i.zae ///
-[pw=hhweight], vce(robust)
+eststo x1: reg ln_crop_income i.n_price_shocks i.zae [pw=hhweight], vce(cluster cluster)
+eststo x2: reg ln_crop_income c.hhi##i.n_price_shocks i.zae [pw=hhweight], vce(cluster cluster)
 
 lincom _b[c.hhi]
 
@@ -319,6 +346,15 @@ test 1.n_price_shocks#c.hhi = 2.n_price_shocks#c.hhi
 
 /*The interaction terms suggest that the marginal effect of crop concentration declines as the number of price shocks increases. A test of equality of the interaction coefficients indicates that the difference between one and two shocks is marginally significant (p = 0.093), suggesting that specialization becomes less beneficial under higher exposure to price shocks.*/
 
+
+esttab x1 x2 using "$OUT/tables/price_shocks.rtf", replace se star(* 0.10 ** 0.05 *** 0.01) label ///
+    title("Price Shocks and Agricultural Income") ///
+    mtitles("Shock only" "Shock × Specialization") ///
+    stats(N r2, labels("Observations" "R-squared")) ///
+    addnotes("Robust standard errors in parentheses") ///
+    compress drop(*.zae *.zae 0.n_price_shocks 0.n_price_shocks#c.hhi)
+    
+	
 ********************************************************************************
 * 5) ROBUSTNESS: MONETARY POVERTY
 ********************************************************************************
@@ -326,6 +362,7 @@ test 1.n_price_shocks#c.hhi = 2.n_price_shocks#c.hhi
 use "$ROOT/ehcvm_welfare_civ2018.dta", clear
 
 gen monetary_poverty = (pcexp < zref)
+label var monetary_poverty "Monetary poverty"
 
 keep vague grappe menage monetary_poverty dali dnal dtot
 
@@ -336,6 +373,7 @@ rename menage household
 rename dali hh_food_cons_annual
 rename dnal hh_nonfood_cons_annual
 rename dtot hh_total_cons_annual
+
 
 sort wave cluster household
 
@@ -356,8 +394,7 @@ drop _merge
 * MONETARY POVERTY MODEL
 ********************************************************************************
 
-logit monetary_poverty c.hhi##i.market_participation ///
-i.zae [pw=hhweight], vce(robust)
+eststo r0: logit monetary_poverty c.hhi##i.market_participation i.zae [pw=hhweight], vce(cluster cluster)
 
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 
@@ -370,9 +407,9 @@ graph export "figures/monetary_poverty_diversification.png", replace
 ********************************************************************************
 
 gen ln_total_cons = ln(hh_total_cons_annual) if hh_total_cons_annual>0
+label var ln_total_cons "Log total consumption"
 
-reg ln_total_cons c.hhi##i.market_participation ///
-i.zae [pw=hhweight], vce(robust)
+eststo r1: reg ln_total_cons c.hhi##i.market_participation i.zae [pw=hhweight], vce(cluster cluster)
 
 margins market_participation, at(hhi=(0.2 0.5 0.8))
 
@@ -381,18 +418,17 @@ graph export "figures/conso.png", replace
 
 
 gen ln_food_cons = ln(hh_food_cons_annual) if hh_food_cons_annual>0
-
+label var ln_food_cons "Log food consumption"
 gen ln_nonfood_cons = ln(hh_nonfood_cons_annual) if hh_nonfood_cons_annual>0
+label var ln_nonfood_cons "Log non-food consumption"
 
+eststo r2: reg ln_food_cons c.hhi##i.market_participation i.zae [pw=hhweight], vce(cluster cluster)
+eststo r3: reg ln_nonfood_cons c.hhi##i.market_participation i.zae [pw=hhweight], vce(cluster cluster)
 
-reg ln_food_cons c.hhi##i.market_participation ///
-i.zae [pw=hhweight], vce(robust)
-
-reg ln_nonfood_cons c.hhi##i.market_participation ///
-i.zae [pw=hhweight], vce(robust)
-
-
-
+esttab r0 r1 r2 r3 using "$OUT/tables/robustness.rtf", replace se star(* 0.10 ** 0.05 *** 0.01) label title("Robustness: Monetary Poverty and Consumption") mtitles("Logit poverty" "Total cons" "Food cons" "Non-food cons") ///
+    stats(N r2, labels("Observations" "R-squared")) ///
+    addnotes("Robust standard errors in parentheses") ///
+    compress drop(*.zae *.zae 0.market_participation 0.market_participation#c.hhi)
 
 
 ********************************************************************************
