@@ -319,17 +319,17 @@ label var dep_education    "Household is deprived in educational attainment (1=y
 label var mpi_score "Multidimensional Poverty score"
 label var mpi_poor "Multidimensionally poor household (1=yes)"
 
-* 1) Lister toutes les variables string
+* 1) List all string variables 
 ds, has(type string)
 
-* 2) Encoder chaque string -> numérique, en gardant le même nom
+* 2) Encode each string -> numerical with same name
 foreach v in `r(varlist)' {
-    encode `v', gen(_`v')   // crée la version numérique
-    drop `v'               // enlève la string
-    rename _`v' `v'        // reprend le même nom
+    encode `v', gen(_`v')   // create numeric version
+    drop `v'               // drop string
+    rename _`v' `v'        // use the same name
 }
 
-* 3) Vérifier qu'il ne reste plus de string
+* 3) Check that there are no strings left
 ds, has(type string)
 
 
