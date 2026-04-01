@@ -6,8 +6,8 @@ PURPOSE
 Construct all indicators required for the Multidimensional Poverty Index (MPI)
 using the EHCVM 2018 survey.
 
-AUTHOR:  Armand Djaha
-VERSION: 2026
+AUTHOR:  Armand Djaha, MSc
+VERSION: 2026.1
 ****************************************************************************************/
 
 do "code/00_setup.do"
