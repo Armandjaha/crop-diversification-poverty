@@ -14,7 +14,7 @@ Construct structural control variables related to agricultural diversification:
 DATA SOURCE
 EHCVM 2018 – Côte d'Ivoire
 
-AUTHOR: Armand Djaha
+AUTHOR: Armand Djaha, MSc
 VERSION: 2026
 ****************************************************************************************/
 
